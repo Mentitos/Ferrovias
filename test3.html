@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.container {
+    overflow-x: auto;
+    width: 600px;
+    border: 1px solid black;
+}
+.inner {
+    width: max-content;
+    min-width: 100%;
+}
+.row {
+    display: grid;
+    /* To ensure all 1fr are equal, they must start from 0 */
+    /* But we want at least 75px */
+}
+.cell {
+    border: 1px solid red;
+    overflow: hidden;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="inner" id="inner">
+    </div>
+</div>
+<script>
+const inner = document.getElementById('inner');
+const cols = `<div class="cell">TREN</div>` + Array(22).fill(0).map((_, i) => `<div class="cell">Stn ${i} long text long text</div>`).join('');
+const row1 = document.createElement('div');
+row1.className = 'row';
+row1.style.gridTemplateColumns = `80px repeat(22, minmax(80px, 1fr))`;
+row1.innerHTML = cols;
+inner.appendChild(row1);
+
+const cols2 = `<div class="cell">#3012</div>` + Array(22).fill(0).map((_, i) => `<div class="cell">04:30</div>`).join('');
+const row2 = document.createElement('div');
+row2.className = 'row';
+row2.style.gridTemplateColumns = `80px repeat(22, minmax(80px, 1fr))`;
+row2.innerHTML = cols2;
+inner.appendChild(row2);
+</script>
+</body>
+</html>
