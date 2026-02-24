@@ -755,40 +755,35 @@
             dom: { vr: [], ret: [] },
         };
 
-        const KEY_MAP = {
-            vr: ["retiro", "saldias", "ciudad_universitaria", "aristobulo_del_valle", "padilla", "florida", "munro", "carapachay", "villa_adelina", "boulogne", "vicealmirante_montes", "don_torcuato", "adolfo_sourdeaux", "villa_de_mayo", "los_polvorines", "pablo_nogues", "grand_bourg", "tierras_altas", "tortuguitas", "manuel_alberti", "del_viso", "cecilia_grierson", "villa_rosa"],
-            ret: ["villa_rosa", "cecilia_grierson", "del_viso", "manuel_alberti", "tortuguitas", "tierras_altas", "grand_bourg", "pablo_nogues", "los_polvorines", "villa_de_mayo", "adolfo_sourdeaux", "don_torcuato", "vicealmirante_montes", "boulogne", "villa_adelina", "carapachay", "munro", "florida", "padilla", "aristobulo_del_valle", "ciudad_universitaria", "saldias", "retiro"]
-        };
-
         async function initData() {
             try {
-                const resp = await fetch('horarios_organizados.json');
+                const resp = await fetch('horarios_por_paginas.json');
                 const json = await resp.json();
-                
-                const dayMap = {
-                    'lunes_a_viernes': 'lv',
-                    'sabado': 'sab',
-                    'domingo_y_feriados': 'dom'
-                };
-                
-                for (let k in dayMap) {
-                    const dayKey = dayMap[k];
-                    const dayData = json[k];
-                    if (!dayData) continue;
-                    
-                    // VR
-                    DATASETS[dayKey].vr = (dayData.hacia_villa_rosa || []).map(t => {
-                        const row = [parseInt(t.tren_nro)];
-                        KEY_MAP.vr.forEach(sk => row.push(t[sk] || null));
-                        return row;
-                    });
-                    
-                    // RET
-                    DATASETS[dayKey].ret = (dayData.hacia_retiro || []).map(t => {
-                        const row = [parseInt(t.tren_nro)];
-                        KEY_MAP.ret.forEach(sk => row.push(t[sk] || null));
-                        return row;
-                    });
+
+                for (let pageKey in json) {
+                    const pageData = json[pageKey];
+                    if (!pageData || pageData.length < 3) continue;
+
+                    const title = pageData[0][0] || "";
+                    let dayKey = 'lv';
+                    if (title.includes("SÁBADOS")) dayKey = 'sab';
+                    else if (title.includes("DOMINGOS")) dayKey = 'dom';
+
+                    const subKey = title.includes("HACIA VILLA ROSA") ? "vr" : "ret";
+
+                    // Skip title (row 0) and header (row 1)
+                    for (let i = 2; i < pageData.length; i++) {
+                        const row = pageData[i];
+                        // Validate it's a schedule row: row[0] should be numeric train number
+                        if (row[0] && /^\d+$/.test(row[0])) {
+                            const formattedRow = [parseInt(row[0])];
+                            // Add station times (indices 1 to 23 in raw data)
+                            for (let j = 1; j < row.length; j++) {
+                                formattedRow.push(row[j] || null);
+                            }
+                            DATASETS[dayKey][subKey].push(formattedRow);
+                        }
+                    }
                 }
                 render();
             } catch (e) {
