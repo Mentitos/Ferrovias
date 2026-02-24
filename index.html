@@ -309,12 +309,17 @@
         }
 
         .next-tag {
-            padding: 0.25rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.72rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.62rem;
             font-weight: 700;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.02em;
             text-transform: uppercase;
+            white-space: normal;
+            display: block;
+            line-height: 1.1;
+            margin-top: 2px;
+            width: fit-content;
         }
 
         .tag-local {
@@ -379,18 +384,20 @@
         }
 
         .sh-cell {
-            padding: 0.5rem 0.6rem;
-            font-size: 0.62rem;
+            padding: 0.8rem 0.4rem;
+            font-size: 0.72rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.05em;
             color: var(--muted);
             font-family: 'DM Mono', monospace;
-            border-right: 1px solid var(--border);
             display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            line-height: 1.2;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            height: 140px;
+            white-space: nowrap;
         }
 
         .sh-cell:last-child {
@@ -405,6 +412,13 @@
         .sh-cell.to-col {
             color: var(--green);
             font-weight: 700;
+        }
+
+        .sh-cell.sh-horizontal {
+            writing-mode: horizontal-tb;
+            transform: none;
+            height: auto;
+            padding-bottom: 0.8rem;
         }
 
         .train-row {
@@ -443,7 +457,6 @@
 
         .cell {
             padding: 0.55rem 0.6rem;
-            border-right: 1px solid var(--border);
             display: flex;
             align-items: center;
             min-height: 40px;
@@ -453,132 +466,14 @@
             border-right: none;
         }
 
-        .col-0 {
-            background: rgba(200, 16, 46, 0.04);
+        .cell-even,
+        .sh-col-even {
+            background-color: transparent;
         }
 
-        .col-1 {
-            background: rgba(180, 60, 0, 0.03);
-        }
-
-        .col-2 {
-            background: rgba(160, 100, 0, 0.03);
-        }
-
-        .col-3 {
-            background: rgba(140, 120, 0, 0.03);
-        }
-
-        .col-4 {
-            background: rgba(120, 140, 0, 0.03);
-        }
-
-        .col-5 {
-            background: rgba(80, 160, 0, 0.03);
-        }
-
-        .col-6 {
-            background: rgba(40, 160, 40, 0.03);
-        }
-
-        .col-7 {
-            background: rgba(0, 160, 80, 0.03);
-        }
-
-        .col-8 {
-            background: rgba(0, 150, 120, 0.03);
-        }
-
-        .col-9 {
-            background: rgba(0, 140, 160, 0.03);
-        }
-
-        .col-10 {
-            background: rgba(0, 100, 200, 0.04);
-        }
-
-        .col-11 {
-            background: rgba(40, 60, 200, 0.04);
-        }
-
-        .col-12 {
-            background: rgba(80, 20, 200, 0.04);
-        }
-
-        .col-13 {
-            background: rgba(120, 0, 180, 0.04);
-        }
-
-        .col-14 {
-            background: rgba(160, 0, 140, 0.04);
-        }
-
-        .col-15 {
-            background: rgba(200, 0, 100, 0.04);
-        }
-
-        .sh-col-0 {
-            background: rgba(200, 16, 46, 0.08);
-        }
-
-        .sh-col-1 {
-            background: rgba(180, 60, 0, 0.06);
-        }
-
-        .sh-col-2 {
-            background: rgba(160, 100, 0, 0.06);
-        }
-
-        .sh-col-3 {
-            background: rgba(140, 120, 0, 0.06);
-        }
-
-        .sh-col-4 {
-            background: rgba(120, 140, 0, 0.06);
-        }
-
-        .sh-col-5 {
-            background: rgba(80, 160, 0, 0.06);
-        }
-
-        .sh-col-6 {
-            background: rgba(40, 160, 40, 0.06);
-        }
-
-        .sh-col-7 {
-            background: rgba(0, 160, 80, 0.06);
-        }
-
-        .sh-col-8 {
-            background: rgba(0, 150, 120, 0.06);
-        }
-
-        .sh-col-9 {
-            background: rgba(0, 140, 160, 0.06);
-        }
-
-        .sh-col-10 {
-            background: rgba(0, 100, 200, 0.08);
-        }
-
-        .sh-col-11 {
-            background: rgba(40, 60, 200, 0.08);
-        }
-
-        .sh-col-12 {
-            background: rgba(80, 20, 200, 0.08);
-        }
-
-        .sh-col-13 {
-            background: rgba(120, 0, 180, 0.08);
-        }
-
-        .sh-col-14 {
-            background: rgba(160, 0, 140, 0.08);
-        }
-
-        .sh-col-15 {
-            background: rgba(200, 0, 100, 0.08);
+        .cell-odd,
+        .sh-col-odd {
+            background-color: transparent;
         }
 
         .cell-num {
@@ -723,8 +618,8 @@
         const STA = [
             "Retiro", "Saldías", "Cd. Universitaria", "A. del Valle", "M. Padilla",
             "Florida", "Munro", "Carapachay", "V. Adelina", "Boulogne",
-            "V. Montes", "Don Torcuato", "A. Sourdeaux", "Cd. Villa de Mayo", "Cd. Los Polvorines",
-            "Cd. Ing. P. Nogués", "Cd. Grand Bourg", "Tierras Altas", "Cd. Tortuguitas",
+            "V. Montes", "Don Torcuato", "A. Sourdeaux", "Villa de Mayo", "Los Polvorines",
+            "P. Nogués", "Grand Bourg", "Tierras Altas", "Tortuguitas",
             "M. Alberti", "Del Viso", "C. Grierson", "Villa Rosa"
         ];
 
@@ -819,24 +714,24 @@
             return n.getHours() * 60 + n.getMinutes();
         }
 
-        function classifyTrain(row) {
-            const reachesEnd = !!row[row.length - 1];
-            if (dir === 'vr') {
-                if (reachesEnd) return 'full';
-                if (row[17]) return 'local';
-                return 'short';
-            } else {
-                if (reachesEnd) return 'full';
-                if (row[7]) return 'local';
-                return 'short';
-            }
-        }
-
         function getTrainTag(row) {
-            const cls = classifyTrain(row);
-            if (cls === 'full') return '<span class="next-tag tag-local">Local</span>';
-            if (cls === 'local') return '<span class="next-tag tag-expreso">Corto</span>';
-            return '<span class="next-tag tag-directo">Parcial</span>';
+            const stations = getDisplayStations();
+            let startIdx = 1;
+            while (startIdx < row.length - 1 && !row[startIdx]) startIdx++;
+            let endIdx = row.length - 1;
+            while (endIdx > 1 && !row[endIdx]) endIdx--;
+
+            const clean = (s) => s.replace("Cd. ", "").replace("Ciudad ", "").replace("Ing. ", "").replace("Vicealmirante ", "V. ").trim();
+            const originName = clean(stations[startIdx - 1]);
+            const destName = clean(stations[endIdx - 1]);
+
+            const startsLate = startIdx > 1;
+            const endsEarly = endIdx < row.length - 1;
+
+            if (!startsLate && !endsEarly) return '<span class="next-tag tag-local">Completo</span>';
+            if (startsLate && !endsEarly) return `<span class="next-tag tag-expreso">Local ${originName}</span>`;
+            if (!startsLate && endsEarly) return `<span class="next-tag tag-expreso">Hasta ${destName}</span>`;
+            return `<span class="next-tag tag-directo">${originName} ➜ ${destName}</span>`;
         }
 
         function populateSelects() {
@@ -929,26 +824,26 @@
             }
 
             const cols = colDispIdxs.length;
-            const gridCols = `80px repeat(${cols}, minmax(75px, 1fr))`;
+            const gridCols = `115px repeat(${cols}, minmax(80px, 1fr))`;
             grid.style.gridTemplateColumns = gridCols;
 
             const hdr = document.createElement('div');
             hdr.className = 'station-header';
 
             const th0 = document.createElement('div');
-            th0.className = 'sh-cell';
-            th0.textContent = 'Tren';
+            th0.className = 'sh-cell sh-horizontal';
+            th0.textContent = 'Nº';
             hdr.appendChild(th0);
 
             colDispIdxs.forEach((di, ci) => {
                 const dataIdx = dispToData(di);
                 const th = document.createElement('div');
-                const colClass = `sh-col-${ci % 16}`;
+                const colClass = `sh-col-${ci % 2 === 0 ? 'even' : 'odd'}`;
                 th.className = `sh-cell ${colClass}`;
                 if (di === fromDisp) th.classList.add('from-col');
                 if (di === toDisp) th.classList.add('to-col');
 
-                th.innerHTML = stations[di].replace(' ', '<br>');
+                th.textContent = stations[di];
                 hdr.appendChild(th);
             });
             grid.appendChild(hdr);
@@ -973,7 +868,7 @@
                     const dataIdx = dispToData(di);
                     const val = row[dataIdx + 1];
                     const td = document.createElement('div');
-                    const colClass = `col-${ci % 16}`;
+                    const colClass = `cell-${ci % 2 === 0 ? 'even' : 'odd'}`;
                     td.className = `cell ${colClass}`;
 
                     if (!val) {
