@@ -370,27 +370,30 @@
             border: 1.5px solid var(--border);
             box-shadow: var(--shadow);
             background: white;
+            column-gap: 0;
         }
 
         .station-header {
             display: grid;
             grid-template-columns: subgrid;
             grid-column: 1 / -1;
-            background: #f0e8e4;
+            background: white;
             border-bottom: 2px solid var(--border);
             position: sticky;
             top: 0;
-            z-index: 5;
+            z-index: 10;
         }
 
         .sh-cell {
             padding: 0.8rem 0.4rem;
             font-size: 0.72rem;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: var(--muted);
+            color: var(--text);
             font-family: 'DM Mono', monospace;
+            background: white;
+            border-right: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -398,6 +401,10 @@
             transform: rotate(180deg);
             height: 140px;
             white-space: nowrap;
+        }
+
+        .sh-cell:not(.sh-horizontal) {
+            background-image: linear-gradient(rgba(180, 60, 0, 0.06), rgba(180, 60, 0, 0.06));
         }
 
         .sh-cell:last-child {
@@ -428,21 +435,22 @@
             border-bottom: 1px solid var(--border);
             transition: background 0.12s;
             cursor: default;
+            background: transparent;
         }
 
         .train-row:last-child {
             border-bottom: none;
         }
 
-        .train-row.even {
+        .train-row.even .cell {
             background: var(--stripe-a);
         }
 
-        .train-row.odd {
+        .train-row.odd .cell {
             background: var(--stripe-b);
         }
 
-        .train-row:hover {
+        .train-row:hover .cell {
             background: #ffebe5 !important;
         }
 
@@ -457,9 +465,14 @@
 
         .cell {
             padding: 0.55rem 0.6rem;
+            border-right: 1px solid var(--border);
             display: flex;
             align-items: center;
             min-height: 40px;
+        }
+
+        .cell:not(.cell-num) {
+            background-image: linear-gradient(rgba(180, 60, 0, 0.06), rgba(180, 60, 0, 0.06));
         }
 
         .cell:last-child {
@@ -483,6 +496,31 @@
             flex-direction: column;
             gap: 2px;
             align-items: flex-start;
+            position: sticky;
+            left: 0;
+            z-index: 8;
+            border-right: 2px solid var(--border) !important;
+            background: white;
+        }
+
+        .sh-cell.sh-horizontal {
+            position: sticky;
+            left: 0;
+            z-index: 9;
+            border-right: 2px solid var(--border) !important;
+            background: white;
+        }
+
+        .train-row.even .cell-num {
+            background: var(--stripe-a);
+        }
+
+        .train-row.odd .cell-num {
+            background: var(--stripe-b);
+        }
+
+        .train-row:hover .cell-num {
+            background: #ffebe5 !important;
         }
 
         .cell-num .train-n {
