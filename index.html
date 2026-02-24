@@ -42,7 +42,6 @@
             min-height: 100vh;
         }
 
-        /* ── HEADER ── */
         .header {
             background: var(--red);
             background-image: linear-gradient(135deg, var(--red-dark) 0%, var(--red) 50%, var(--red-light) 100%);
@@ -107,7 +106,6 @@
             text-shadow: 0 0 12px rgba(255, 200, 200, 0.5);
         }
 
-        /* ── CONTROLS ── */
         .controls {
             background: white;
             border-bottom: 2px solid var(--red);
@@ -205,7 +203,6 @@
             font-weight: 700;
         }
 
-        /* ── NEXT TRAIN BANNER ── */
         .next-banner {
             max-width: 1100px;
             margin: 1rem auto 0;
@@ -335,7 +332,6 @@
             color: #3040b0;
         }
 
-        /* ── MAIN CONTENT ── */
         .main {
             max-width: 1100px;
             margin: 0 auto;
@@ -362,7 +358,6 @@
             color: var(--muted);
         }
 
-        /* ── TRAIN CARDS ── */
         .trains-grid {
             display: grid;
             border-radius: 12px;
@@ -372,7 +367,6 @@
             background: white;
         }
 
-        /* Station header row */
         .station-header {
             display: grid;
             grid-template-columns: subgrid;
@@ -413,7 +407,6 @@
             font-weight: 700;
         }
 
-        /* Train row */
         .train-row {
             display: grid;
             grid-template-columns: subgrid;
@@ -460,7 +453,6 @@
             border-right: none;
         }
 
-        /* Column color bands */
         .col-0 {
             background: rgba(200, 16, 46, 0.04);
         }
@@ -525,7 +517,6 @@
             background: rgba(200, 0, 100, 0.04);
         }
 
-        /* Column headers match bands */
         .sh-col-0 {
             background: rgba(200, 16, 46, 0.08);
         }
@@ -590,7 +581,6 @@
             background: rgba(200, 0, 100, 0.08);
         }
 
-        /* Train number cell */
         .cell-num {
             font-family: 'DM Mono', monospace;
             font-size: 0.72rem;
@@ -606,7 +596,6 @@
             font-size: 0.75rem;
         }
 
-        /* Time cell */
         .cell-time {
             font-family: 'DM Mono', monospace;
             font-size: 0.88rem;
@@ -637,7 +626,6 @@
             font-family: 'DM Mono', monospace;
         }
 
-        /* no-stop dot */
         .no-stop {
             color: #ddd;
             font-size: 1rem;
@@ -732,10 +720,6 @@
     </div>
 
     <script>
-        // ══════════════════════════════════════
-        // BELGRANO NORTE — HORARIO N°20
-        // Stations Retiro → Villa Rosa
-        // ══════════════════════════════════════
         const STA = [
             "Retiro", "Saldías", "Cd. Universitaria", "A. del Valle", "M. Padilla",
             "Florida", "Munro", "Carapachay", "V. Adelina", "Boulogne",
@@ -743,11 +727,6 @@
             "Cd. Ing. P. Nogués", "Cd. Grand Bourg", "Tierras Altas", "Cd. Tortuguitas",
             "M. Alberti", "Del Viso", "C. Grierson", "Villa Rosa"
         ];
-
-        // A train is LOCAL if it stops at Grand Bourg (index 15) — el ramal local llega hasta ahí
-        // EXPRESO if skips intermediate stops
-        // We detect: if it reaches Villa Rosa = full run; if stops at Grand Bourg area = local
-        // Simple heuristic: trains with null after index ~14 = short-run
 
         let DATASETS = {
             lv: { vr: [], ret: [] },
@@ -771,13 +750,12 @@
 
                     const subKey = title.includes("HACIA VILLA ROSA") ? "vr" : "ret";
 
-                    // Skip title (row 0) and header (row 1)
                     for (let i = 2; i < pageData.length; i++) {
                         const row = pageData[i];
-                        // Validate it's a schedule row: row[0] should be numeric train number
+
                         if (row[0] && /^\d+$/.test(row[0])) {
                             const formattedRow = [parseInt(row[0])];
-                            // Add station times (indices 1 to 23 in raw data)
+
                             for (let j = 1; j < row.length; j++) {
                                 formattedRow.push(row[j] || null);
                             }
@@ -793,8 +771,7 @@
 
         initData();
 
-        // ── State ──
-        let dir = 'vr';    // 'vr' or 'ret'
+        let dir = 'vr';
         let day = 'lv';
 
         function setDir(d) {
@@ -817,15 +794,11 @@
             return (DATASETS[day] || DATASETS['lv'])[dir] || DATASETS['lv'][dir];
         }
 
-        // For 'vr': stations left→right = STA[0..21] (Retiro→VillaRosa)
-        // For 'ret': data columns are also [VillaRosa..Retiro] (idx 0=VillaRosa, idx 21=Retiro)
-        // We display from left=origin for both, so for 'ret' we reverse display order
         function getDisplayStations() {
             if (dir === 'vr') return STA;
-            return [...STA].reverse(); // Villa Rosa → Retiro
+            return [...STA].reverse();
         }
 
-        // Convert display index → data index
         function dispToData(dispIdx) {
             return dispIdx;
         }
@@ -841,12 +814,11 @@
             return n.getHours() * 60 + n.getMinutes();
         }
 
-        // Classify train
         function classifyTrain(row) {
             const reachesEnd = !!row[row.length - 1];
             if (dir === 'vr') {
                 if (reachesEnd) return 'full';
-                if (row[17]) return 'local'; // reaches Grand Bourg area (index 16+1=17)
+                if (row[17]) return 'local';
                 return 'short';
             } else {
                 if (reachesEnd) return 'full';
@@ -862,7 +834,6 @@
             return '<span class="next-tag tag-directo">Parcial</span>';
         }
 
-        // ── Selects ──
         function populateSelects() {
             const stations = getDisplayStations();
             ['selFrom', 'selTo'].forEach((id, si) => {
@@ -879,7 +850,6 @@
             });
         }
 
-        // ── Main render ──
         function render() {
             const stations = getDisplayStations();
             const dataset = getDataset();
@@ -888,10 +858,8 @@
             const fromData = isNaN(fromDisp) ? null : dispToData(fromDisp);
             const toData = isNaN(toDisp) ? null : dispToData(toDisp);
 
-            // Which display columns to show
             let colDispIdxs = stations.map((_, i) => i);
 
-            // Filter trains that stop at from/to
             const now = nowMin();
             let rows = dataset.filter(row => {
                 if (fromData !== null && !row[fromData + 1]) return false;
@@ -900,7 +868,6 @@
                 return true;
             });
 
-            // Find next train
             let nextTrain = null, nextDiff = Infinity;
             if (fromData !== null) {
                 rows.forEach(row => {
@@ -916,7 +883,6 @@
                 });
             }
 
-            // Banner
             const banner = document.getElementById('nextBanner');
             if (nextTrain && fromData !== null && nextDiff < 1440) {
                 const fromT = nextTrain[fromData + 1];
@@ -944,7 +910,6 @@
                 banner.innerHTML = '';
             }
 
-            // Title
             const dirLabel = dir === 'vr' ? '→ Villa Rosa' : '→ Retiro';
             const dayLabel = { lv: 'Lunes a Viernes', sab: 'Sábados', dom: 'Domingos y Feriados' }[day];
             document.getElementById('sectionTitle').textContent = `Partidas ${dirLabel} · ${dayLabel}`;
@@ -958,16 +923,13 @@
                 return;
             }
 
-            // Grid template
             const cols = colDispIdxs.length;
             const gridCols = `80px repeat(${cols}, minmax(75px, 1fr))`;
             grid.style.gridTemplateColumns = gridCols;
 
-            // Header
             const hdr = document.createElement('div');
             hdr.className = 'station-header';
 
-            // Tren cell
             const th0 = document.createElement('div');
             th0.className = 'sh-cell';
             th0.textContent = 'Tren';
@@ -980,13 +942,12 @@
                 th.className = `sh-cell ${colClass}`;
                 if (di === fromDisp) th.classList.add('from-col');
                 if (di === toDisp) th.classList.add('to-col');
-                // Wrap long names
+
                 th.innerHTML = stations[di].replace(' ', '<br>');
                 hdr.appendChild(th);
             });
             grid.appendChild(hdr);
 
-            // Rows
             rows.forEach((row, ri) => {
                 const isNext = nextTrain && row[0] === nextTrain[0];
                 const fromTime = fromData !== null ? row[fromData + 1] : row.find((v, i) => i > 0 && v);
@@ -998,7 +959,6 @@
                 const tr = document.createElement('div');
                 tr.className = `train-row ${ri % 2 === 0 ? 'even' : 'odd'}${isNext ? ' is-next' : ''}${isPast ? ' past' : ''}`;
 
-                // Number + tag cell
                 const td0 = document.createElement('div');
                 td0.className = 'cell cell-num';
                 td0.innerHTML = `<span class="train-n">#${row[0]}</span>${getTrainTag(row)}`;
@@ -1041,7 +1001,6 @@
             }
         }
 
-        // ── Clock ──
         function tick() {
             const n = new Date();
             const pad = x => String(x).padStart(2, '0');
@@ -1049,12 +1008,14 @@
                 `${pad(n.getHours())}:${pad(n.getMinutes())}:${pad(n.getSeconds())}`;
         }
 
-        // ── Auto day detect ──
         function autoDay() {
             const d = new Date().getDay();
             if (d === 0) setDay('dom');
             else if (d === 6) setDay('sab');
             else setDay('lv');
+        }
+
+        autoDay();
         }
 
         // ── Init ──
