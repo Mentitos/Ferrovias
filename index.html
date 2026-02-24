@@ -766,6 +766,11 @@
                 render();
             } catch (e) {
                 console.error("Error loading schedule:", e);
+                const grid = document.getElementById('grid');
+                if (grid) grid.innerHTML = `<div class="no-results" style="color:var(--red)">
+                    Error al cargar los datos. Por favor, asegúrate de que la URL termine en "/" 
+                    o intenta recargar la página.<br><small>${e.message}</small>
+                </div>`;
             }
         }
 
