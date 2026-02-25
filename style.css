@@ -18,6 +18,7 @@
     --shadow: 0 2px 12px rgba(200, 16, 46, 0.08);
 }
 
+/* Me gustan las mujeres como mi mujer, con rulos, con lindos ojos y que me traten mal */
 * {
     margin: 0;
     padding: 0;
@@ -361,7 +362,7 @@ body {
     box-shadow: var(--shadow);
     background: white;
     column-gap: 0;
-    /* Custom scrollbar */
+
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
 }
@@ -408,6 +409,7 @@ body {
     transform: rotate(180deg);
     height: 140px;
     white-space: nowrap;
+    overflow: hidden;
 }
 
 .sh-cell.from-col {
@@ -570,29 +572,203 @@ body {
 }
 
 @media (max-width: 600px) {
+
+
     .header-inner {
-        padding: 0.7rem 1rem;
+        padding: 0.6rem 1rem;
+        gap: 0.75rem;
     }
 
-    .controls {
-        padding: 0.7rem 1rem;
-    }
-
-    .next-banner,
-    .main {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-
-    .clock-box {
-        font-size: 1.1rem;
+    .lozenge {
+        font-size: 0.85rem;
+        padding: 0.2rem 0.5rem;
     }
 
     .header-title h1 {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
+    }
+
+    .header-title p {
+        font-size: 0.6rem;
+        letter-spacing: 0.08em;
+    }
+
+    .clock-box {
+        font-size: 1rem;
+        padding: 0.25rem 0.55rem;
+    }
+
+
+    .controls {
+        padding: 0.7rem 1rem;
+        gap: 0.6rem;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ctrl-group {
+        width: 100%;
+    }
+
+    .ctrl-group:not(.station-selects) {
+        justify-content: space-between;
+    }
+
+    .pill-group {
+        flex: 1;
+    }
+
+    .pill {
+        flex: 1;
+        text-align: center;
+        font-size: 0.8rem;
+        padding: 0.45rem 0.4rem;
+    }
+
+    .station-selects {
+        flex-wrap: nowrap;
+        gap: 0.4rem;
     }
 
     .station-selects select {
-        max-width: 100%;
+        min-width: 0;
+        max-width: none;
+        flex: 1;
+        font-size: 0.82rem;
+        padding: 0.42rem 0.5rem;
+    }
+
+    .arrow-icon {
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+
+    .next-banner {
+        padding: 0 0.75rem;
+        margin-top: 0.75rem;
+    }
+
+    .next-card {
+        padding: 0.85rem 1rem;
+        gap: 0.75rem;
+        flex-wrap: nowrap;
+        align-items: center;
+        border-radius: 12px;
+    }
+
+    .next-pulse {
+        display: none;
+    }
+
+    .next-label {
+        font-size: 0.6rem;
+        letter-spacing: 0.12em;
+    }
+
+    .next-time {
+        font-size: 2rem;
+    }
+
+    .next-detail {
+        font-size: 0.75rem;
+    }
+
+    .next-countdown {
+        padding: 0.5rem 0.8rem;
+        flex-shrink: 0;
+    }
+
+    .next-countdown .cd-num {
+        font-size: 1.6rem;
+    }
+
+    .next-countdown .cd-label {
+        font-size: 0.58rem;
+    }
+
+
+    .next-banner,
+    .main {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .section-header {
+        margin: 0.9rem 0 0.5rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+    }
+
+    .trains-grid {
+        border-radius: 10px;
+        max-height: calc(100dvh - 320px);
+    }
+
+
+    .cell {
+        padding: 0.4rem 0.3rem;
+        min-height: 36px;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .cell-num {
+        padding: 0.4rem 0.35rem;
+        min-width: 0;
+        width: 72px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .cell-num .train-n {
+        font-size: 0.65rem;
+    }
+
+    .next-tag {
+        font-size: 0.5rem;
+        padding: 0.12rem 0.28rem;
+        text-align: center;
+        margin-top: 2px;
+    }
+
+
+    .sh-cell {
+        height: 90px;
+        font-size: 0.52rem;
+        padding: 0.4rem 0.15rem;
+        letter-spacing: 0.01em;
+        white-space: normal;
+        word-break: break-word;
+        overflow: hidden;
+        text-align: center;
+        line-height: 1.15;
+    }
+
+
+    .sh-cell.sh-horizontal {
+        height: auto;
+        width: 72px;
+        padding: 0.5rem 0.35rem;
+        justify-content: center;
+        white-space: normal;
+        word-break: normal;
+    }
+
+
+    .cell-time {
+        font-size: 0.78rem;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .cell-time.from-time,
+    .cell-time.to-time {
+        font-size: 0.82rem;
     }
 }

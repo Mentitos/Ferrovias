@@ -5,7 +5,7 @@ const STA = [
     "P. Nogués", "Grand Bourg", "Tierras Altas", "Tortuguitas",
     "M. Alberti", "Del Viso", "C. Grierson", "Villa Rosa"
 ];
-
+// Me gusta cocinar aparte de hacer codigo, es relajante y lo siento como una muestra de amor
 let DATASETS = {
     lv: { vr: [], ret: [] },
     sab: { vr: [], ret: [] },
@@ -207,7 +207,10 @@ function render() {
     }
 
     const cols = colDispIdxs.length;
-    const gridCols = `115px repeat(${cols}, minmax(80px, 1fr))`;
+    const isMobile = window.innerWidth <= 600;
+    const firstColW = isMobile ? '72px' : '115px';
+    const colW = isMobile ? 'minmax(62px, 1fr)' : 'minmax(80px, 1fr)';
+    const gridCols = `${firstColW} repeat(${cols}, ${colW})`;
     grid.style.gridTemplateColumns = gridCols;
 
     const hdr = document.createElement('div');
@@ -226,7 +229,23 @@ function render() {
         if (di === fromDisp) th.classList.add('from-col');
         if (di === toDisp) th.classList.add('to-col');
 
-        th.textContent = stations[di];
+        let name = stations[di];
+        if (isMobile) {
+            name = name
+                .replace('Ciudad Universitaria', 'Cd. Univ.')
+                .replace('Cd. Universitaria', 'Cd. Univ.')
+                .replace('Vicealmirante', 'V.')
+                .replace('Ingeniero', 'Ing.')
+                .replace('Los Polvorines', 'L. Polvorines')
+                .replace('Don Torcuato', 'D. Torcuato')
+                .replace('Villa de Mayo', 'V. de Mayo')
+                .replace('Grand Bourg', 'Gd. Bourg')
+                .replace('Tierras Altas', 'T. Altas')
+                .replace('Tortuguitas', 'Tortuguitas')
+                .replace('M. Alberti', 'M. Alberti')
+                .replace('V. Montes', 'V. Montes');
+        }
+        th.textContent = name;
         hdr.appendChild(th);
     });
     grid.appendChild(hdr);
@@ -278,7 +297,7 @@ function render() {
         const nextRow = grid.querySelector('.train-row.is-next');
         if (nextRow) {
             setTimeout(() => {
-                nextRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                nextRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 100);
         }
     }
