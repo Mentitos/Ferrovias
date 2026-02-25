@@ -5,7 +5,7 @@ const STA = [
     "P. Nogués", "Grand Bourg", "Tierras Altas", "Tortuguitas",
     "M. Alberti", "Del Viso", "C. Grierson", "Villa Rosa"
 ];
-// Me gusta cocinar aparte de hacer codigo, es relajante y lo siento como una muestra de amor
+
 let DATASETS = {
     lv: { vr: [], ret: [] },
     sab: { vr: [], ret: [] },
@@ -323,3 +323,38 @@ render();
 tick();
 setInterval(tick, 1000);
 setInterval(render, 30000);
+
+// ── Click-and-drag scroll ──────────────────────────────────
+(function initDragScroll() {
+    const el = document.getElementById('grid');
+    let isDown = false;
+    let startX, startY, scrollLeft, scrollTop;
+
+    el.addEventListener('mousedown', e => {
+        if (e.button !== 0) return;
+        isDown = true;
+        el.classList.add('drag-scrolling');
+        startX = e.pageX - el.offsetLeft;
+        startY = e.pageY - el.offsetTop;
+        scrollLeft = el.scrollLeft;
+        scrollTop = el.scrollTop;
+        e.preventDefault();
+    });
+
+    const stop = () => {
+        isDown = false;
+        el.classList.remove('drag-scrolling');
+    };
+
+    el.addEventListener('mouseleave', stop);
+    el.addEventListener('mouseup', stop);
+    window.addEventListener('mouseup', stop);
+
+    el.addEventListener('mousemove', e => {
+        if (!isDown) return;
+        const x = e.pageX - el.offsetLeft;
+        const y = e.pageY - el.offsetTop;
+        el.scrollLeft = scrollLeft - (x - startX) * 1.2;
+        el.scrollTop = scrollTop - (y - startY) * 1.2;
+    });
+})();
