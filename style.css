@@ -355,11 +355,29 @@ body {
 .trains-grid {
     display: grid;
     border-radius: 12px;
-    overflow-x: auto;
+    overflow: auto;
+    max-height: calc(100vh - 260px);
     border: 1.5px solid var(--border);
     box-shadow: var(--shadow);
     background: white;
     column-gap: 0;
+    /* Custom scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+.trains-grid::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.trains-grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.trains-grid::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
 }
 
 .station-header {
