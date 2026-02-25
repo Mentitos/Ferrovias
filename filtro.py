@@ -19,21 +19,21 @@ def pdf_a_json_ajustado():
     with pdfplumber.open(archivo_entrada) as pdf:
         for i, pagina in enumerate(pdf.pages):
             num_pagina = i + 1
-            # Extraemos la tabla
+            
             tabla = pagina.extract_table()
 
             if tabla:
                 tabla_limpia = []
                 for idx_fila, fila in enumerate(tabla):
-                    # Lógica por fila:
+                    
                     if idx_fila == 0:
-                        # Primera fila: Tal cual viene (Título)
+                        
                         fila_procesada = [celda.replace('\n', ' ').strip() if celda else "" for celda in fila]
                     elif idx_fila == 1:
-                        # Segunda fila: Invertimos las palabras (Estaciones)
+                        
                         fila_procesada = [corregir_sentido(celda) for celda in fila]
                     else:
-                        # Resto de las filas (Horarios): Solo limpiar
+                        
                         fila_procesada = [celda.replace('\n', ' ').strip() if celda else "" for celda in fila]
                     
                     if any(fila_procesada):

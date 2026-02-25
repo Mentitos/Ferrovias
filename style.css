@@ -802,3 +802,41 @@ body {
 .trains-grid.drag-scrolling * {
     pointer-events: none;
 }
+
+
+.timetable-link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.4);
+    transition: text-decoration-color 0.2s;
+}
+
+.timetable-link:hover {
+    text-decoration-color: white;
+}
+
+.footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    margin-top: 2rem;
+    border-top: 1px solid var(--border);
+    background: white;
+}
+
+.footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.footer a {
+    color: var(--red);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.footer a:hover {
+    color: var(--red-dark);
+    text-decoration: underline;
+}
