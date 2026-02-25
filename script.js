@@ -5,7 +5,7 @@ const STA = [
     "P. Nogués", "Grand Bourg", "Tierras Altas", "Tortuguitas",
     "M. Alberti", "Del Viso", "C. Grierson", "Villa Rosa"
 ];
-
+// Me gusta cocinar aparte de hacer codigo, es relajante y lo siento como una muestra de amor
 let DATASETS = {
     lv: { vr: [], ret: [] },
     sab: { vr: [], ret: [] },
@@ -250,16 +250,26 @@ function render() {
     });
     grid.appendChild(hdr);
 
+
+    let lastPastIdx = -1;
+    rows.forEach((row, ri) => {
+        const fromTime = fromData !== null ? row[fromData + 1] : row.find((v, i) => i > 0 && v);
+        const fromMin = fromTime ? timeToMin(fromTime) : null;
+        let adjMin = fromMin;
+        if (adjMin !== null && adjMin < now - 120) adjMin += 1440;
+        if (adjMin !== null && adjMin < now) lastPastIdx = ri;
+    });
+
     rows.forEach((row, ri) => {
         const isNext = nextTrain && row[0] === nextTrain[0];
         const fromTime = fromData !== null ? row[fromData + 1] : row.find((v, i) => i > 0 && v);
         const fromMin = fromTime ? timeToMin(fromTime) : null;
         let adjMin = fromMin;
         if (adjMin !== null && adjMin < now - 120) adjMin += 1440;
-        const isPast = adjMin !== null && adjMin < now && !isNext;
+        const isLastPast = ri === lastPastIdx && !isNext;
 
         const tr = document.createElement('div');
-        tr.className = `train-row ${ri % 2 === 0 ? 'even' : 'odd'}${isNext ? ' is-next' : ''}${isPast ? ' past' : ''}`;
+        tr.className = `train-row ${ri % 2 === 0 ? 'even' : 'odd'}${isNext ? ' is-next' : ''}${isLastPast ? ' last-past' : ''}`;
 
         const td0 = document.createElement('div');
         td0.className = 'cell cell-num';
@@ -295,10 +305,30 @@ function render() {
 
     if (fromData !== null) {
         const nextRow = grid.querySelector('.train-row.is-next');
+        const fromHeader = grid.querySelector('.sh-cell.from-col');
         if (nextRow) {
             setTimeout(() => {
-                nextRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
+                const firstRow = grid.querySelector('.train-row');
+                const rowH = nextRow.offsetHeight || 40;
+                const BUFFER_ROWS = 1;
+                const firstRowTop = firstRow ? firstRow.offsetTop : 0;
+                const targetScrollTop = Math.max(0, (nextRow.offsetTop - firstRowTop) - rowH * BUFFER_ROWS);
+
+                let targetScrollLeft = 0;
+                if (fromHeader) {
+                    const numColW = grid.querySelector('.cell-num')?.offsetWidth || 72;
+                    const dataCells = grid.querySelectorAll('.station-header .sh-cell:not(.sh-horizontal)');
+                    let bufferColW = 62;
+                    if (dataCells.length > 1) bufferColW = dataCells[1].offsetWidth || 62;
+                    targetScrollLeft = fromHeader.offsetLeft - numColW - bufferColW;
+                }
+
+                grid.scrollTo({
+                    top: Math.max(0, targetScrollTop),
+                    left: Math.max(0, targetScrollLeft),
+                    behavior: 'smooth'
+                });
+            }, 120);
         }
     }
 }
@@ -324,7 +354,6 @@ tick();
 setInterval(tick, 1000);
 setInterval(render, 30000);
 
-// ── Click-and-drag scroll ──────────────────────────────────
 (function initDragScroll() {
     const el = document.getElementById('grid');
     let isDown = false;
