@@ -187,7 +187,26 @@ function populateSelects(prevFromName = null, prevToName = null) {
     }
 }
 
+let lastSelectedFrom = "";
+let lastSelectedTo = "";
+
 function render(shouldScroll = true) {
+    const selFrom = document.getElementById('selFrom');
+    const selTo = document.getElementById('selTo');
+    if (selFrom && selTo) {
+        let fromVal = selFrom.value;
+        let toVal = selTo.value;
+        if (fromVal !== "" && toVal !== "" && fromVal === toVal) {
+            if (fromVal !== lastSelectedFrom) {
+                selTo.value = lastSelectedFrom;
+            } else if (toVal !== lastSelectedTo) {
+                selFrom.value = lastSelectedTo;
+            }
+        }
+        lastSelectedFrom = selFrom.value;
+        lastSelectedTo = selTo.value;
+    }
+
     const stations = getDisplayStations();
     const dataset = getDataset();
     const fromDisp = parseInt(document.getElementById('selFrom').value);

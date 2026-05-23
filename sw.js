@@ -1,4 +1,4 @@
-const CACHE_NAME = 'el-rojito-v4';
+const CACHE_NAME = 'el-rojito-v6';
 const ASSETS = [
     './',
     './index.html',
