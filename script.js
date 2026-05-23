@@ -377,12 +377,12 @@ function render(shouldScroll = true) {
     document.getElementById('sectionCount').textContent = `${rows.length} trenes`;
 
     const grid = document.getElementById('grid');
-    grid.innerHTML = '';
-
     if (rows.length === 0) {
         grid.innerHTML = '<div class="no-results">Sin resultados para esta selección</div>';
         return;
     }
+
+    const fragment = document.createDocumentFragment();
 
     const cols = colDispIdxs.length;
     const isMobile = window.innerWidth <= 600;
@@ -426,7 +426,7 @@ function render(shouldScroll = true) {
         th.textContent = name;
         hdr.appendChild(th);
     });
-    grid.appendChild(hdr);
+    fragment.appendChild(hdr);
 
 
     let lastPastIdx = -1;
@@ -478,8 +478,10 @@ function render(shouldScroll = true) {
             tr.appendChild(td);
         });
 
-        grid.appendChild(tr);
+        fragment.appendChild(tr);
     });
+
+    grid.replaceChildren(fragment);
 
     if (shouldScroll && fromData !== null) {
         setTimeout(recenterScroll, 120);
