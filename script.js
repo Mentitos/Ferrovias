@@ -386,8 +386,10 @@ function render(shouldScroll = true) {
 
     const cols = colDispIdxs.length;
     const isMobile = window.innerWidth <= 600;
-    const firstColW = isMobile ? '72px' : '115px';
-    const colW = isMobile ? 'minmax(62px, 1fr)' : 'minmax(80px, 1fr)';
+    const baseFirstColW = isMobile ? 72 : 115;
+    const baseColWMin = isMobile ? 62 : 80;
+    const firstColW = `calc(${baseFirstColW}px * var(--zoom, 1))`;
+    const colW = `minmax(calc(${baseColWMin}px * var(--zoom, 1)), 1fr)`;
     const gridCols = `${firstColW} repeat(${cols}, ${colW})`;
     grid.style.gridTemplateColumns = gridCols;
 
@@ -542,6 +544,9 @@ function updateRecenterFabVisibility() {
 function recenterScroll() {
     const grid = document.getElementById('grid');
     if (!grid) return;
+    
+    grid.style.setProperty('--zoom', 1);
+    grid.activeZoom = 1;
     
     const targets = getTargetScrollPositions(grid);
     if (targets.hasNext) {
@@ -748,3 +753,47 @@ function showPwaInstructions(e) {
         banner.classList.add('visible');
     }
 }
+
+(function initPinchZoom() {
+    const grid = document.getElementById('grid');
+    if (!grid) return;
+
+    grid.activeZoom = 1;
+    let initialDist = 0;
+    let isPinching = false;
+
+    grid.addEventListener('touchstart', e => {
+        if (e.touches.length === 2) {
+            isPinching = true;
+            initialDist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+        }
+    }, { passive: true });
+
+    grid.addEventListener('touchmove', e => {
+        if (isPinching && e.touches.length === 2) {
+            const currentDist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            
+            if (initialDist > 0) {
+                const ratio = currentDist / initialDist;
+                let newZoom = Math.min(Math.max((grid.activeZoom || 1) * ratio, 0.65), 1.6);
+                grid.style.setProperty('--zoom', newZoom);
+            }
+        }
+    }, { passive: true });
+
+    grid.addEventListener('touchend', e => {
+        if (isPinching) {
+            const currentZoomStr = grid.style.getPropertyValue('--zoom');
+            if (currentZoomStr) {
+                grid.activeZoom = parseFloat(currentZoomStr);
+            }
+            isPinching = false;
+        }
+    });
+})();
