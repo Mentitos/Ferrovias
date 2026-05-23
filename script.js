@@ -187,7 +187,7 @@ function populateSelects(prevFromName = null, prevToName = null) {
     }
 }
 
-function render() {
+function render(shouldScroll = true) {
     const stations = getDisplayStations();
     const dataset = getDataset();
     const fromDisp = parseInt(document.getElementById('selFrom').value);
@@ -457,7 +457,7 @@ function render() {
         grid.appendChild(tr);
     });
 
-    if (fromData !== null) {
+    if (shouldScroll && fromData !== null) {
         const nextRow = grid.querySelector('.train-row.is-next');
         const fromHeader = grid.querySelector('.sh-cell.from-col');
         if (nextRow) {
@@ -550,7 +550,7 @@ populateSelects();
 render();
 tick();
 setInterval(tick, 1000);
-setInterval(render, 30000);
+setInterval(() => render(false), 30000);
 
 (function initDragScroll() {
     const el = document.getElementById('grid');
