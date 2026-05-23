@@ -925,3 +925,60 @@ body {
     margin-left: 0.5rem;
     text-shadow: 0 0 10px rgba(255, 153, 153, 0.35);
 }
+
+.recenter-fab {
+    position: absolute;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(200, 16, 46, 0.9);
+    background-image: linear-gradient(135deg, rgba(200, 16, 46, 0.9) 0%, rgba(232, 48, 74, 0.9) 100%);
+    color: white;
+    font-size: 1.2rem;
+    width: 2.8rem;
+    height: 2.8rem;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(200, 16, 46, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(8px);
+    outline: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.6) translateY(12px);
+    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+
+.recenter-fab.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1) translateY(0);
+}
+
+.recenter-fab.visible:hover {
+    transform: translateY(-2px) scale(1.05);
+    background: var(--red);
+    box-shadow: 0 8px 24px rgba(200, 16, 46, 0.38);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.recenter-fab.visible:active {
+    transform: translateY(0) scale(0.95);
+    box-shadow: 0 3px 10px rgba(200, 16, 46, 0.25);
+}
+
+@media (max-width: 600px) {
+    .recenter-fab {
+        bottom: 1rem;
+        right: 1rem;
+        width: 2.4rem;
+        height: 2.4rem;
+        font-size: 1.05rem;
+    }
+}

@@ -215,6 +215,12 @@ function render(shouldScroll = true) {
         }
     }
 
+    // Resetear visibilidad del botón de centrado al re-renderizar
+    const recenterFab = document.getElementById('recenterFab');
+    if (recenterFab) {
+        recenterFab.classList.remove('visible');
+    }
+
     let colDispIdxs = stations.map((_, i) => i);
 
     const now = nowMin();
@@ -458,32 +464,72 @@ function render(shouldScroll = true) {
     });
 
     if (shouldScroll && fromData !== null) {
-        const nextRow = grid.querySelector('.train-row.is-next');
-        const fromHeader = grid.querySelector('.sh-cell.from-col');
-        if (nextRow) {
-            setTimeout(() => {
-                const firstRow = grid.querySelector('.train-row');
-                const rowH = nextRow.offsetHeight || 40;
-                const BUFFER_ROWS = 1;
-                const firstRowTop = firstRow ? firstRow.offsetTop : 0;
-                const targetScrollTop = Math.max(0, (nextRow.offsetTop - firstRowTop) - rowH * BUFFER_ROWS);
+        setTimeout(recenterScroll, 120);
+    } else {
+        setTimeout(updateRecenterFabVisibility, 150);
+    }
+}
 
-                let targetScrollLeft = 0;
-                if (fromHeader) {
-                    const numColW = grid.querySelector('.cell-num')?.offsetWidth || 72;
-                    const dataCells = grid.querySelectorAll('.station-header .sh-cell:not(.sh-horizontal)');
-                    let bufferColW = 62;
-                    if (dataCells.length > 1) bufferColW = dataCells[1].offsetWidth || 62;
-                    targetScrollLeft = fromHeader.offsetLeft - numColW - bufferColW;
-                }
+function getTargetScrollPositions(grid) {
+    const nextRow = grid.querySelector('.train-row.is-next');
+    const fromHeader = grid.querySelector('.sh-cell.from-col');
+    if (!nextRow) return { top: 0, left: 0, hasNext: false };
+    
+    const firstRow = grid.querySelector('.train-row');
+    const rowH = nextRow.offsetHeight || 40;
+    const BUFFER_ROWS = 1;
+    const firstRowTop = firstRow ? firstRow.offsetTop : 0;
+    const targetScrollTop = Math.max(0, (nextRow.offsetTop - firstRowTop) - rowH * BUFFER_ROWS);
 
-                grid.scrollTo({
-                    top: Math.max(0, targetScrollTop),
-                    left: Math.max(0, targetScrollLeft),
-                    behavior: 'smooth'
-                });
-            }, 120);
-        }
+    let targetScrollLeft = 0;
+    if (fromHeader) {
+        const numColW = grid.querySelector('.cell-num')?.offsetWidth || 72;
+        const dataCells = grid.querySelectorAll('.station-header .sh-cell:not(.sh-horizontal)');
+        let bufferColW = 62;
+        if (dataCells.length > 1) bufferColW = dataCells[1].offsetWidth || 62;
+        targetScrollLeft = fromHeader.offsetLeft - numColW - bufferColW;
+    }
+    return { top: Math.max(0, targetScrollTop), left: Math.max(0, targetScrollLeft), hasNext: true };
+}
+
+function updateRecenterFabVisibility() {
+    const grid = document.getElementById('grid');
+    const recenterFab = document.getElementById('recenterFab');
+    if (!grid || !recenterFab) return;
+
+    const fromDisp = parseInt(document.getElementById('selFrom').value);
+    if (isNaN(fromDisp)) {
+        recenterFab.classList.remove('visible');
+        return;
+    }
+
+    const targets = getTargetScrollPositions(grid);
+    if (!targets.hasNext) {
+        recenterFab.classList.remove('visible');
+        return;
+    }
+
+    const diffTop = Math.abs(grid.scrollTop - targets.top);
+    const diffLeft = Math.abs(grid.scrollLeft - targets.left);
+
+    if (diffTop > 45 || diffLeft > 45) {
+        recenterFab.classList.add('visible');
+    } else {
+        recenterFab.classList.remove('visible');
+    }
+}
+
+function recenterScroll() {
+    const grid = document.getElementById('grid');
+    if (!grid) return;
+    
+    const targets = getTargetScrollPositions(grid);
+    if (targets.hasNext) {
+        grid.scrollTo({
+            top: targets.top,
+            left: targets.left,
+            behavior: 'smooth'
+        });
     }
 }
 
@@ -549,6 +595,11 @@ autoDay();
 populateSelects();
 render();
 tick();
+
+const gridEl = document.getElementById('grid');
+if (gridEl) {
+    gridEl.addEventListener('scroll', updateRecenterFabVisibility);
+}
 setInterval(tick, 1000);
 setInterval(() => render(false), 30000);
 
