@@ -215,7 +215,6 @@ function render(shouldScroll = true) {
         }
     }
 
-    // Resetear visibilidad del botón de centrado al re-renderizar
     const recenterFab = document.getElementById('recenterFab');
     if (recenterFab) {
         recenterFab.classList.remove('visible');
@@ -636,3 +635,95 @@ setInterval(() => render(false), 30000);
         el.scrollTop = scrollTop - (y - startY) * 1.2;
     });
 })();
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+            .catch(err => console.error('Error al registrar Service Worker:', err));
+    });
+}
+
+let deferredPrompt = null;
+const pwaBanner = document.getElementById('pwaBanner');
+const btnPwaInstall = document.getElementById('btnPwaInstall');
+
+window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    const isDismissed = localStorage.getItem('pwa_dismissed');
+    const dismissedTime = localStorage.getItem('pwa_dismissed_time');
+    
+    if (isDismissed === 'true' && dismissedTime) {
+        const timeDiff = Date.now() - parseInt(dismissedTime);
+        if (timeDiff < 24 * 60 * 60 * 1000) {
+            return;
+        }
+    }
+    
+    if (pwaBanner) {
+        pwaBanner.classList.add('visible');
+    }
+});
+
+if (btnPwaInstall) {
+    btnPwaInstall.addEventListener('click', () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(choiceResult => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('El usuario aceptó la instalación');
+            }
+            deferredPrompt = null;
+            if (pwaBanner) {
+                pwaBanner.classList.remove('visible');
+            }
+        });
+    });
+}
+
+function dismissPwaBanner(e) {
+    if (e) e.preventDefault();
+    const banner = document.getElementById('pwaBanner');
+    if (banner) {
+        banner.classList.remove('visible');
+        
+        setTimeout(() => {
+            const installBtn = document.getElementById('btnPwaInstall');
+            const contentSpan = banner.querySelector('.pwa-mini-text');
+            if (installBtn) installBtn.style.display = 'inline-block';
+            if (contentSpan) contentSpan.textContent = "Agregar a pantalla de inicio";
+        }, 300);
+    }
+    if (e && e.target && e.target.classList.contains('pwa-mini-btn-dismiss')) {
+        localStorage.setItem('pwa_dismissed', 'true');
+        localStorage.setItem('pwa_dismissed_time', Date.now().toString());
+    }
+}
+
+function showPwaInstructions(e) {
+    if (e) e.preventDefault();
+    const banner = document.getElementById('pwaBanner');
+    if (!banner) return;
+
+    if (deferredPrompt) {
+        banner.classList.add('visible');
+    } else {
+        const contentSpan = banner.querySelector('.pwa-mini-text');
+        const installBtn = document.getElementById('btnPwaInstall');
+        
+        if (window.location.protocol === 'file:') {
+            if (contentSpan) contentSpan.textContent = "Abrilo desde un servidor local o HTTPS para poder instalarlo.";
+            if (installBtn) installBtn.style.display = 'none';
+        } else if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+            if (contentSpan) contentSpan.textContent = "En iOS: Tocá 'Compartir' en Safari y elegí 'Agregar a pantalla de inicio'.";
+            if (installBtn) installBtn.style.display = 'none';
+        } else {
+            if (contentSpan) contentSpan.textContent = "Tocá los 3 puntos (⋮ o ⋯) del navegador y elegí 'Instalar' o 'Agregar'.";
+            if (installBtn) installBtn.style.display = 'none';
+        }
+        
+        banner.classList.add('visible');
+    }
+}

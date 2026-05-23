@@ -9,6 +9,11 @@
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#c8102e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon-192.png">
 </head>
 
 <body>
@@ -75,8 +80,23 @@
     </div>
 
     <footer class="footer">
-        <p>Hecho por <a href="https://mentitos.github.io/Presentacion/" target="_blank">Matias Gabriel Tello</a></p>
+        <p>Hecho por <a href="https://mentitos.github.io/Presentacion/" target="_blank">Matias Gabriel Tello</a> · <a href="#" id="linkPwaManual" onclick="showPwaInstructions(event)" style="margin-left: 0.5rem;">📱 Instalar App</a></p>
     </footer>
+
+    <!-- Banner de Instalación PWA Minimalista -->
+    <div class="pwa-banner-mini" id="pwaBanner">
+        <div class="pwa-mini-content">
+            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="pwa-mini-svg">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+            </svg>
+            <span class="pwa-mini-text">Agregar a pantalla de inicio</span>
+        </div>
+        <div class="pwa-mini-buttons">
+            <button class="pwa-mini-btn pwa-mini-btn-install" id="btnPwaInstall">Instalar</button>
+            <button class="pwa-mini-btn pwa-mini-btn-dismiss" onclick="dismissPwaBanner(event)">×</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
