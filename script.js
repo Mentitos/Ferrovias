@@ -95,11 +95,11 @@ initData();
 let dir = 'vr';
 let day = 'lv';
 
-function setDir(d) {
+function setDir(d, prevFromName = null, prevToName = null) {
     dir = d;
     document.getElementById('btn-vr').className = 'pill' + (d === 'vr' ? ' active' : '');
     document.getElementById('btn-ret').className = 'pill' + (d === 'ret' ? ' active' : '');
-    populateSelects();
+    populateSelects(prevFromName, prevToName);
     render();
 }
 
@@ -155,20 +155,36 @@ function getTrainTag(row) {
     return `<span class="next-tag tag-directo">${originName} ➜ ${destName}</span>`;
 }
 
-function populateSelects() {
+function populateSelects(prevFromName = null, prevToName = null) {
     const stations = getDisplayStations();
-    ['selFrom', 'selTo'].forEach((id, si) => {
-        const sel = document.getElementById(id);
-        const prev = sel.value;
-        sel.innerHTML = '<option value="">— Todas —</option>';
-        stations.forEach((s, i) => {
-            const opt = document.createElement('option');
-            opt.value = i;
-            opt.textContent = s;
-            sel.appendChild(opt);
-        });
-        if (prev) sel.value = prev;
+    
+    const selFrom = document.getElementById('selFrom');
+    const fromName = prevFromName || (selFrom ? selFrom.options[selFrom.selectedIndex]?.textContent : null);
+    selFrom.innerHTML = '<option value="">— Todas —</option>';
+    stations.forEach((s, i) => {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = s;
+        selFrom.appendChild(opt);
     });
+    if (fromName && fromName !== '— Todas —') {
+        const idx = stations.indexOf(fromName);
+        selFrom.value = idx >= 0 ? idx : "";
+    }
+    
+    const selTo = document.getElementById('selTo');
+    const toName = prevToName || (selTo ? selTo.options[selTo.selectedIndex]?.textContent : null);
+    selTo.innerHTML = '<option value="">— Todas —</option>';
+    stations.forEach((s, i) => {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = s;
+        selTo.appendChild(opt);
+    });
+    if (toName && toName !== '— Todas —') {
+        const idx = stations.indexOf(toName);
+        selTo.value = idx >= 0 ? idx : "";
+    }
 }
 
 function render() {
@@ -178,6 +194,26 @@ function render() {
     const toDisp = parseInt(document.getElementById('selTo').value);
     const fromData = isNaN(fromDisp) ? null : dispToData(fromDisp);
     const toData = isNaN(toDisp) ? null : dispToData(toDisp);
+
+    // Auto-switch para direccion
+    if (fromData !== null && toData !== null) {
+        const fromName = stations[fromDisp];
+        const toName = stations[toDisp];
+        const absoluteFromIdx = STA.indexOf(fromName);
+        const absoluteToIdx = STA.indexOf(toName);
+        
+        if (absoluteFromIdx > absoluteToIdx && dir === 'vr') {
+            setTimeout(() => {
+                setDir('ret', fromName, toName);
+            }, 0);
+            return;
+        } else if (absoluteFromIdx < absoluteToIdx && dir === 'ret') {
+            setTimeout(() => {
+                setDir('vr', fromName, toName);
+            }, 0);
+            return;
+        }
+    }
 
     let colDispIdxs = stations.map((_, i) => i);
 
