@@ -6,6 +6,44 @@ const STA = [
     "M. Alberti", "Del Viso", "C. Grierson", "Villa Rosa"
 ];
 // Me gusta cocinar aparte de hacer codigo, es relajante y lo siento como una muestra de amor
+const FARES_MATRIX = [
+  [0.0, 310.0, 310.0, 310.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0],
+  [310.0, 0.0, 310.0, 310.0, 310.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0],
+  [310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0, 420.0, 420.0, 420.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0],
+  [310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0],
+  [420.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 520.0, 520.0, 520.0, 520.0, 520.0],
+  [420.0, 420.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 520.0, 520.0, 520.0, 520.0, 520.0],
+  [420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 520.0, 520.0, 520.0, 520.0],
+  [420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 520.0, 520.0, 520.0],
+  [420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 520.0, 520.0, 520.0],
+  [420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 520.0, 520.0],
+  [520.0, 420.0, 420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0, 420.0, 420.0, 520.0],
+  [520.0, 520.0, 420.0, 420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0, 420.0, 420.0],
+  [520.0, 520.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0, 420.0],
+  [520.0, 520.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0],
+  [520.0, 520.0, 520.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0],
+  [520.0, 520.0, 520.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 310.0, 420.0, 420.0],
+  [520.0, 520.0, 520.0, 520.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 310.0, 420.0],
+  [520.0, 520.0, 520.0, 520.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0, 420.0],
+  [520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 420.0, 420.0, 420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0, 310.0],
+  [520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 420.0, 420.0, 420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0, 310.0],
+  [520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 420.0, 420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0, 310.0],
+  [520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 310.0, 0.0, 310.0],
+  [520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 520.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 420.0, 310.0, 310.0, 310.0, 310.0, 0.0]
+];
+
+function getStaIndex(dispIdx) {
+    if (dir === 'vr') return dispIdx;
+    return 22 - dispIdx;
+}
+
+let selectedFareType = 'reg';
+function setFareType(val) {
+    selectedFareType = val;
+    render();
+}
+
+// Me gusta cocinar aparte de hacer codigo, es relajante y lo siento como una muestra de amor
 let DATASETS = {
     lv: { vr: [], ret: [] },
     sab: { vr: [], ret: [] },
@@ -167,30 +205,110 @@ function render() {
     }
 
     const banner = document.getElementById('nextBanner');
-    if (nextTrain && fromData !== null && nextDiff < 1440) {
-        const fromT = nextTrain[fromData + 1];
-        const toT = toData !== null ? nextTrain[toData + 1] : null;
-        const cdText = nextDiff === 0 ? '¡Ya!' : nextDiff < 60 ? `${nextDiff} min` : `${Math.floor(nextDiff / 60)}h ${nextDiff % 60}m`;
+    if (fromData !== null && toData !== null) {
+        const fromSta = getStaIndex(fromDisp);
+        const toSta = getStaIndex(toDisp);
+        const baseFare = FARES_MATRIX[fromSta][toSta];
+        
+        let selectedFarePrice = 0;
+        let sectionNum = '';
+        if (baseFare > 0) {
+            sectionNum = baseFare === 310 ? '1' : baseFare === 420 ? '2' : '3';
+            if (selectedFareType === 'reg') {
+                selectedFarePrice = baseFare;
+            } else if (selectedFareType === 'soc') {
+                if (baseFare === 310) selectedFarePrice = 139.50;
+                else if (baseFare === 420) selectedFarePrice = 189.00;
+                else selectedFarePrice = 234.00;
+            } else if (selectedFareType === 'unreg') {
+                if (baseFare === 310) selectedFarePrice = 620.00;
+                else if (baseFare === 420) selectedFarePrice = 840.00;
+                else selectedFarePrice = 1040.00;
+            } else if (selectedFareType === 'cash') {
+                selectedFarePrice = 1100.00;
+            }
+        }
+        
         const fromName = stations[fromDisp];
-        const toName = toData !== null ? stations[toDisp] : null;
-        banner.innerHTML = `<div class="next-card">
-      <div class="next-pulse"></div>
-      <div class="next-info">
-        <div class="next-label">Próximo tren desde ${fromName}</div>
-        <div class="next-time">${fromT}${toT ? ` → ${toT}` : ''}</div>
-        <div class="next-detail">
-          Tren <strong>#${nextTrain[0]}</strong>
-          ${toName ? `· llega a <strong>${toName}</strong> a las <strong style="color:var(--green)">${toT}</strong>` : ''}
-          &nbsp; ${getTrainTag(nextTrain)}
-        </div>
-      </div>
-      <div class="next-countdown">
-        <div class="cd-num">${cdText}</div>
-        <div class="cd-label">para salir</div>
-      </div>
-    </div>`;
+        const toName = stations[toDisp];
+        
+        const fareRowHtml = baseFare > 0 ? `
+            <div class="next-fare-row">
+                <span class="fare-text">Boleto: <strong class="fare-amount">$${selectedFarePrice.toFixed(2).replace('.', ',')}</strong></span>
+                <span class="fare-select-container">
+                    <select class="fare-select-compact" onchange="setFareType(this.value)">
+                        <option value="reg" ${selectedFareType === 'reg' ? 'selected' : ''}>SUBE Registrada</option>
+                        <option value="soc" ${selectedFareType === 'soc' ? 'selected' : ''}>SUBE Social (-55%)</option>
+                        <option value="unreg" ${selectedFareType === 'unreg' ? 'selected' : ''}>Sin Registrar</option>
+                        <option value="cash" ${selectedFareType === 'cash' ? 'selected' : ''}>Efectivo (Única)</option>
+                    </select>
+                </span>
+            </div>
+        ` : '';
+
+        if (nextTrain && nextDiff < 1440) {
+            const fromT = nextTrain[fromData + 1];
+            const toT = nextTrain[toData + 1] || null;
+            const cdText = nextDiff === 0 ? '¡Ya!' : nextDiff < 60 ? `${nextDiff} min` : `${Math.floor(nextDiff / 60)}h ${nextDiff % 60}m`;
+            
+            banner.innerHTML = `
+                <div class="next-card">
+                    <div class="next-pulse"></div>
+                    <div class="next-info">
+                        <div class="next-label">Próximo tren desde ${fromName}</div>
+                        <div class="next-time">${fromT}${toT ? ` → ${toT}` : ''}</div>
+                        <div class="next-detail">
+                            Tren <strong>#${nextTrain[0]}</strong>
+                            ${toT ? `· llega a <strong>${toName}</strong> a las <strong style="color:var(--green)">${toT}</strong>` : ''}
+                            &nbsp; ${getTrainTag(nextTrain)}
+                        </div>
+                        ${fareRowHtml}
+                    </div>
+                    <div class="next-countdown">
+                        <div class="cd-num">${cdText}</div>
+                        <div class="cd-label">para salir</div>
+                    </div>
+                </div>
+            `;
+        } else {
+            banner.innerHTML = `
+                <div class="next-card">
+                    <div class="next-info">
+                        <div class="next-label">Recorrido seleccionado</div>
+                        <div class="next-time" style="font-size: 1.8rem; margin: 0.2rem 0;">${fromName} ➜ ${toName}</div>
+                        <div class="next-detail">
+                            No hay más trenes programados para el resto del día en esta selección.
+                        </div>
+                        ${fareRowHtml}
+                    </div>
+                </div>
+            `;
+        }
     } else {
-        banner.innerHTML = '';
+        if (fromData !== null && toData === null && nextTrain && nextDiff < 1440) {
+            const fromT = nextTrain[fromData + 1];
+            const cdText = nextDiff === 0 ? '¡Ya!' : nextDiff < 60 ? `${nextDiff} min` : `${Math.floor(nextDiff / 60)}h ${nextDiff % 60}m`;
+            const fromName = stations[fromDisp];
+            
+            banner.innerHTML = `
+                <div class="next-card">
+                    <div class="next-pulse"></div>
+                    <div class="next-info">
+                        <div class="next-label">Próximo tren desde ${fromName}</div>
+                        <div class="next-time">${fromT}</div>
+                        <div class="next-detail">
+                            Tren <strong>#${nextTrain[0]}</strong> &nbsp; ${getTrainTag(nextTrain)}
+                        </div>
+                    </div>
+                    <div class="next-countdown">
+                        <div class="cd-num">${cdText}</div>
+                        <div class="cd-label">para salir</div>
+                    </div>
+                </div>
+            `;
+        } else {
+            banner.innerHTML = '';
+        }
     }
 
     const dirLabel = dir === 'vr' ? '→ Villa Rosa' : '→ Retiro';

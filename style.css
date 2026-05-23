@@ -840,3 +840,81 @@ body {
     color: var(--red-dark);
     text-decoration: underline;
 }
+
+/* ==========================================
+   TARIFAS - BOLETO - INTEGRADO EN TARJETA
+   ========================================== */
+
+.next-fare-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 0.6rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--border);
+    font-size: 0.82rem;
+    color: var(--muted);
+    flex-wrap: wrap;
+}
+
+
+.fare-text {
+    font-weight: 500;
+    color: var(--text);
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.25rem;
+}
+
+.fare-amount {
+    color: var(--red);
+    font-size: 1.05rem;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    text-shadow: 0 0 10px rgba(200, 16, 46, 0.05);
+}
+
+.fare-select-container {
+    display: inline-block;
+}
+
+.fare-select-compact {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 0.15rem 0.6rem 0.15rem 0.4rem;
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.fare-select-compact:focus,
+.fare-select-compact:hover {
+    border-color: var(--red);
+    color: var(--red);
+    background: #ffffff;
+    box-shadow: 0 2px 5px rgba(200, 16, 46, 0.08);
+}
+
+
+@media (max-width: 600px) {
+    .next-fare-row {
+        gap: 0.5rem;
+        font-size: 0.76rem;
+    }
+    
+    .fare-amount {
+        font-size: 0.95rem;
+    }
+    
+    .fare-select-compact {
+        font-size: 0.68rem;
+        padding: 0.12rem 0.4rem;
+    }
+
+}
