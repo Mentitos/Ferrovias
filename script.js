@@ -494,11 +494,55 @@ function tick() {
         `${pad(n.getHours())}:${pad(n.getMinutes())}:${pad(n.getSeconds())}`;
 }
 
+const FERIADOS = [
+    { "fecha": "2026-01-01", "motivo": "Año Nuevo", "tipo": "inamovible" },
+    { "fecha": "2026-02-16", "motivo": "Carnaval", "tipo": "inamovible" },
+    { "fecha": "2026-02-17", "motivo": "Carnaval", "tipo": "inamovible" },
+    { "fecha": "2026-03-23", "motivo": "Feriado con fines turísticos", "tipo": "turistico" },
+    { "fecha": "2026-03-24", "motivo": "Día Nacional de la Memoria por la Verdad y la Justicia", "tipo": "inamovible" },
+    { "fecha": "2026-04-02", "motivo": "Día del Veterano y de los Caídos en la Guerra de Malvinas", "tipo": "inamovible" },
+    { "fecha": "2026-04-03", "motivo": "Viernes Santo", "tipo": "inamovible" },
+    { "fecha": "2026-05-01", "motivo": "Día del Trabajador", "tipo": "inamovible" },
+    { "fecha": "2026-05-25", "motivo": "Día de la Revolución de Mayo", "tipo": "inamovible" },
+    { "fecha": "2026-06-15", "motivo": "Paso a la Inmortalidad del Gral. Don Martín Miguel de Güemes (traslado del 17/6)", "tipo": "trasladable" },
+    { "fecha": "2026-06-20", "motivo": "Paso a la Inmortalidad del Gral. Manuel Belgrano", "tipo": "inamovible" },
+    { "fecha": "2026-07-09", "motivo": "Día de la Independencia", "tipo": "inamovible" },
+    { "fecha": "2026-07-10", "motivo": "Feriado con fines turísticos", "tipo": "turistico" },
+    { "fecha": "2026-08-17", "motivo": "Paso a la Inmortalidad del Gral. José de San Martín", "tipo": "trasladable" },
+    { "fecha": "2026-10-12", "motivo": "Día del Respeto a la Diversidad Cultural", "tipo": "trasladable" },
+    { "fecha": "2026-11-23", "motivo": "Día de la Soberanía Nacional (traslado del 20/11)", "tipo": "trasladable" },
+    { "fecha": "2026-12-07", "motivo": "Feriado con fines turísticos", "tipo": "turistico" },
+    { "fecha": "2026-12-08", "motivo": "Inmaculada Concepción de María", "tipo": "inamovible" },
+    { "fecha": "2026-12-25", "motivo": "Navidad", "tipo": "inamovible" }
+];
+
+function getLocalDateString() {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
 function autoDay() {
-    const d = new Date().getDay();
-    if (d === 0) setDay('dom');
-    else if (d === 6) setDay('sab');
-    else setDay('lv');
+    const localDate = getLocalDateString();
+    const feriado = FERIADOS.find(f => f.fecha === localDate);
+    const holidayMsg = document.getElementById('holidayMsg');
+    
+    if (feriado) {
+        setDay('dom');
+        if (holidayMsg) {
+            holidayMsg.textContent = ` · HOY ES FERIADO: ${feriado.motivo.toUpperCase()}`;
+        }
+    } else {
+        const d = new Date().getDay();
+        if (d === 0) setDay('dom');
+        else if (d === 6) setDay('sab');
+        else setDay('lv');
+        if (holidayMsg) {
+            holidayMsg.textContent = '';
+        }
+    }
 }
 
 autoDay();

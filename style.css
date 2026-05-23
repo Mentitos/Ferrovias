@@ -918,3 +918,10 @@ body {
     }
 
 }
+
+.holiday-msg {
+    color: #ff9999;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    text-shadow: 0 0 10px rgba(255, 153, 153, 0.35);
+}
